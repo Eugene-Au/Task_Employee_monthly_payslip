@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Payslip</title>	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<link rel="shortcut icon" href="../pic/money.ico" />
+    <script language="javascript" type="text/javascript" src="../3rdparty/jquery-2.1.1.min.js"></script><!-- -->
+    <script language="javascript" type="text/javascript" src="../3rdparty/papaparse.js"></script><!-- csv to objets -->      
+    <script language="javascript" type="text/javascript" src="main.js"></script><!-- for generatePayslip  --> 
+    <script language="javascript" type="text/javascript">       
+        $(function(){            
+            
+			//-------------------------------------------------------------------------------
+            // event handler for the button
+            // <on file read complete> - it call the generatePayslip function 
+            // generatePayslip - does all the rest 
+            //-------------------------------------------------------------------------------
+            $('#BtnFilePapa').change(function(evt){ //--------- -                                
+                
+                // to make it work more than one time for the same file
+                if ($('#BtnFilePapa').val() == '') {
+                    return;
+                };
+                
+                // get file
+                var file = evt.target.files[0];
+                
+                // run CSV to Object parser
+                Papa.parse(file, {
+                    header: true,
+                    delimiter:",",
+                    complete: function(results) {                        
+                        my.generatePayslip(results.data); //uses main.js
+                    }
+                });
+                $('#BtnFilePapa').val(''); // to make it work more than one time for the same file
+			});
+            
+        });        
+    </script>
+
+</head>
+<body>
+    <noscript>
+	   <h3> This site requires JavaScript </h3>
+	</noscript>
+    
+    <input type="file" id="BtnFilePapa" />
+</body>
+</html>
